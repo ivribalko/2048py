@@ -1,3 +1,5 @@
+from enum import Enum
+
 class MoveDirection(Enum):
   UP = 1
   DOWN = 2

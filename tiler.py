@@ -22,6 +22,14 @@ class Tiler:
       row_text += self.tiles[row_index][x].get_text()
     return row_text
 
+  def clear(self):
+    for x in range(self.row_count):
+      for y in range(self.col_count):
+        self.tiles[x][y].value = 0
+
+  def spawn_new(self):
+    empty = get_random_empty()
+
   def get_random_empty(self):
     random.shuffle(self.random_indexes)
     for x in self.random_indexes:
