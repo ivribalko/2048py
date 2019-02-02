@@ -1,8 +1,9 @@
 import os
 
-class Drawer:
-  def clear(self):
+
+def row(item):
+    print(item)
+
+
+def clear():
     os.system('clear')
-    
-  def row(sef, row):
-    print(row)
