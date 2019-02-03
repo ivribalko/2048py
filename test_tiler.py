@@ -30,6 +30,16 @@ class TilerUnitTest(unittest.TestCase):
         self.set_column(2, [0, 0, 0, 0, 2])
         self.tiler.apply_move(Direction.UP)
 
+    @force_table_resolution(cols=3, rows=5)
+    def test_get_empty_for3x5(self, tiler):
+        self.tiler = tiler
+        self.set_column(0, [0, 0, 2, 0, 4])
+        self.set_column(2, [0, 0, 0, 8, 4])
+        one = self.tiler.get_random_empty_tile()
+        one.value = 2
+        two = self.tiler.get_random_empty_tile()
+        self.assertNotEqual(one, two)
+
     @force_table_resolution(cols=4, rows=4)
     def test_move_result_when_column_2222(self, tiler):
         self.tiler = tiler

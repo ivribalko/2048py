@@ -87,9 +87,9 @@ class Tiler:
         random.shuffle(self.__random_indexes_x)
         random.shuffle(self.__random_indexes_y)
         for x in self.__random_indexes_x:
-            row = self.__rows[x]
+            column = self.__cols[x]
             for y in self.__random_indexes_y:
-                random_tile = row[y]
+                random_tile = column[y]
                 if random_tile.is_empty():
                     return random_tile
 
