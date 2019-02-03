@@ -5,5 +5,5 @@ def row(item):
     print(item)
 
 
-def clear():
+def clear_screen():
     os.system('clear')

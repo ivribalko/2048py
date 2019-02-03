@@ -1,25 +1,23 @@
 from config import row_count
-from drawer import row, clear
+from drawer import row, clear_screen
 from tiler import Tiler, NoEmptyTileError
-from direction import Direction
-
-keyboard_to_direction = {
-    'w': Direction.UP,
-    'a': Direction.LEFT,
-    's': Direction.DOWN,
-    'd': Direction.RIGHT,
-}
+from direction import keyboard_to_direction
 
 
 def spawn_new_and_redraw():
-    tiler.spawn_new()
-    clear()
+    tiler.spawn_new_tile()
+    clear_screen()
     for x in range(row_count):
         row(tiler.get_row_text(x))
 
 
+def restart():
+    tiler.clear()
+    spawn_new_and_redraw()
+
+
 tiler = Tiler()
-spawn_new_and_redraw()
+restart()
 
 while True:
     try:
@@ -30,9 +28,8 @@ while True:
         if str(e) == 'q':
             break
         elif str(e) == 'r':
-            tiler.clear()
+            restart()
         else:
             print("Use W/A/S/D, R, Q")
     except NoEmptyTileError:
-        tiler.clear()
-        spawn_new_and_redraw()
+        restart()
