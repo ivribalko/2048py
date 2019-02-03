@@ -1,40 +1,70 @@
 import unittest
-from config import row_count, col_count
+import config
 from direction import Direction
 from tiler import Tiler
 
 
+def force_table_resolution(cols, rows):
+    def wrap(f):
+        def wrapped_f(*args):
+            config.col_count = cols
+            config.row_count = rows
+            f(*args, Tiler())
+        return wrapped_f
+    return wrap
+
+
 class TilerUnitTest(unittest.TestCase):
     def setUp(self):
-        self.tiler = Tiler()
-        self.assertEqual(row_count, 4, "Not ready for other table configuration")
-        self.assertEqual(col_count, 4, "Not ready for other table configuration")
+        self.col_count_save = config.col_count
+        self.row_count_save = config.row_count
 
-    def test_move_result_when_column_2222(self):
+    def tearDown(self):
+        config.col_count = self.col_count_save
+        config.row_count = self.row_count_save
+
+    @force_table_resolution(cols=3, rows=5)
+    def test_move_up_for3x5(self, tiler):
+        self.tiler = tiler
+        self.set_column(0, [0, 0, 4])
+        self.set_column(2, [0, 0, 0, 0, 2])
+        self.tiler.apply_move(Direction.UP)
+
+    @force_table_resolution(cols=4, rows=4)
+    def test_move_result_when_column_2222(self, tiler):
+        self.tiler = tiler
         self.assert_move_result_column(
             direction=Direction.DOWN,
             values=[2, 2, 2, 2],
             expected=[0, 0, 4, 4])
 
-    def test_move_result_when_column_2248(self):
+    @force_table_resolution(cols=4, rows=4)
+    def test_move_result_when_column_2248(self, tiler):
+        self.tiler = tiler
         self.assert_move_result_column(
             direction=Direction.DOWN,
             values=[2, 2, 8, 16],
             expected=[0, 4, 8, 16])
 
-    def test_move_result_when_column_24816(self):
+    @force_table_resolution(cols=4, rows=4)
+    def test_move_result_when_column_24816(self, tiler):
+        self.tiler = tiler
         self.assert_move_result_column(
             direction=Direction.DOWN,
             values=[2, 4, 8, 16],
             expected=[2, 4, 8, 16])
 
-    def test_move_result_when_row_4082(self):
+    @force_table_resolution(cols=4, rows=4)
+    def test_move_result_when_row_4082(self, tiler):
+        self.tiler = tiler
         self.assert_move_result_row(
             direction=Direction.LEFT,
             values=[4, 0, 8, 2],
             expected=[4, 8, 2, 0])
 
-    def test_move_result_when_row_4082_2(self):
+    @force_table_resolution(cols=4, rows=4)
+    def test_move_result_when_row_4082_2(self, tiler):
+        self.tiler = tiler
         self.assert_move_result_row(
             direction=Direction.RIGHT,
             values=[4, 0, 8, 2],

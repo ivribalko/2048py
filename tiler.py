@@ -1,29 +1,29 @@
 import random
-from config import row_count, col_count, new_tile_values, tile_width
+import config
 from direction import Direction
 from tile import Tile
 
 
 class Tiler:
-    __random_indexes_x = list(range(col_count))
-    __random_indexes_y = list(range(row_count))
+    __random_indexes_x = list(range(config.col_count))
+    __random_indexes_y = list(range(config.row_count))
 
     def __init__(self):
-        tiles = [[Tile() for y in range(row_count)] for x in range(col_count)]
+        tiles = [[Tile() for y in range(config.row_count)] for x in range(config.col_count)]
         self.__rows = []
-        for y in range(row_count):
+        for y in range(config.row_count):
             row = []
-            for x in range(col_count):
+            for x in range(config.col_count):
                 row.append(tiles[x][y])
             self.__rows.append(row)
         self.__cols = []
-        for x in range(col_count):
+        for x in range(config.col_count):
             col = []
-            for y in range(row_count):
+            for y in range(config.row_count):
                 col.append(tiles[x][y])
             self.__cols.append(col)
-        self.__stub_tile_row_text_top = f'|{"¯" * tile_width}|' * col_count + '\n'
-        self.__stub_tile_row_text_bot = '\n' + f'|{"_" * tile_width}|' * col_count
+        self.__stub_tile_row_text_top = f'|{"¯" * config.tile_width}|' * config.col_count + '\n'
+        self.__stub_tile_row_text_bot = '\n' + f'|{"_" * config.tile_width}|' * config.col_count
 
     def apply_move(self, direction):
         if direction is Direction.UP:
@@ -81,7 +81,7 @@ class Tiler:
 
     def spawn_new_tile(self):
         empty = self.get_random_empty_tile()
-        empty.value = random.choice(new_tile_values)
+        empty.value = random.choice(config.new_tile_values)
 
     def get_random_empty_tile(self):
         random.shuffle(self.__random_indexes_x)
