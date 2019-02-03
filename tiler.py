@@ -4,7 +4,10 @@ from tile import Tile
 
 
 def try_move_tile_into(move_from, move_to):
-    if move_from.is_empty() != move_to.is_empty() or move_to.value == move_from.value:
+    if move_to == move_from:
+        raise Exception("Moving from and to are same")
+
+    if move_to.is_empty() or move_to.value == move_from.value:
         move_to.value += move_from.value
         move_from.value = 0
         return True
@@ -18,10 +21,7 @@ class Tiler:
     random_indexes = []
 
     def __init__(self, row_count, col_count):
-        if row_count != col_count:
-            raise Exception('Same row and col expected')
-
-        self.tiles = [[Tile() for x in range(col_count)] for y in range(row_count)]
+        self.tiles = [[Tile() for y in range(row_count)] for x in range(col_count)]
         self.row_count = row_count
         self.col_count = col_count
         self.random_indexes = list(range(col_count))
@@ -31,21 +31,25 @@ class Tiler:
             max_y = self.row_count - 1
             for x in range(0, self.col_count):
                 last_busy_y = max_y
-                for y in reversed(range(0, max_y - 1)):
+                for y in reversed(range(0, max_y)):
                     moving_tile = self.tiles[x][y]
 
                     if moving_tile.is_empty():
                         continue
 
                     if not try_move_tile_into(moving_tile, self.tiles[x][last_busy_y]):
-                        last_busy_y = y
-                        if not last_busy_y + 1 > max_y:
-                            try_move_tile_into(moving_tile, self.tiles[x][last_busy_y + 1])
+                        empty_y = last_busy_y - 1
+                        if empty_y != y and empty_y >= 0:
+                            try_move_tile_into(moving_tile, self.tiles[x][empty_y])
+                            last_busy_y = empty_y
+                        else:
+                            last_busy_y = y
+
 
     def get_row_text(self, row_index):
         row_text = ''
         for x in range(self.col_count):
-            row_text += self.tiles[row_index][x].get_text()
+            row_text += self.tiles[x][row_index].get_text()
         return row_text
 
     def clear(self):
