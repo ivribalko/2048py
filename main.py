@@ -1,5 +1,4 @@
-from config import row_count
-from drawer import row, clear_screen
+from drawer import draw_all, clear_screen
 from tiler import Tiler, NoEmptyTileError
 from direction import keyboard_to_direction
 
@@ -7,8 +6,7 @@ from direction import keyboard_to_direction
 def spawn_new_and_redraw():
     tiler.spawn_new_tile()
     clear_screen()
-    for x in range(row_count):
-        row(tiler.get_row_text(x))
+    draw_all(tiler)
 
 
 def restart():

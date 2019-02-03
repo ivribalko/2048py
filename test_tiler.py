@@ -26,7 +26,7 @@ class TilerUnitTest(unittest.TestCase):
     @force_table_resolution(cols=3, rows=5)
     def test_move_up_for3x5(self, tiler):
         self.tiler = tiler
-        self.set_column(0, [0, 0, 4])
+        self.set_column(0, [0, 0, 4, 0, 0])
         self.set_column(2, [0, 0, 0, 0, 2])
         self.tiler.apply_move(Direction.UP)
 
