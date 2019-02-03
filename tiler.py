@@ -1,15 +1,7 @@
 import random
-from config import row_count, col_count, new_tile_values
+from config import row_count, col_count, new_tile_values, tile_width
 from direction import Direction
 from tile import Tile
-
-
-class SameTileError(Exception):
-    pass
-
-
-class NoEmptyTileError(Exception):
-    pass
 
 
 class Tiler:
@@ -30,6 +22,8 @@ class Tiler:
             for y in range(row_count):
                 col.append(tiles[x][y])
             self.__cols.append(col)
+        self.__stub_tile_row_text_top = f'|{"¯" * tile_width}|' * col_count + '\n'
+        self.__stub_tile_row_text_bot = '\n' + f'|{"_" * tile_width}|' * col_count
 
     def apply_move(self, direction):
         if direction is Direction.UP:
@@ -74,9 +68,10 @@ class Tiler:
         return False
 
     def get_row_text(self, row_index):
-        row_text = ''
+        row_text = self.__stub_tile_row_text_top
         for tile in self.__rows[row_index]:
             row_text += tile.get_text()
+        row_text += self.__stub_tile_row_text_bot
         return row_text
 
     def clear(self):
@@ -99,3 +94,11 @@ class Tiler:
                     return random_tile
 
         raise NoEmptyTileError("No empty tile")
+
+
+class SameTileError(Exception):
+    pass
+
+
+class NoEmptyTileError(Exception):
+    pass
