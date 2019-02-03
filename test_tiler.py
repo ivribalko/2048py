@@ -1,4 +1,5 @@
 import unittest
+from config import row_count, col_count
 from direction import Direction
 from tiler import Tiler
 
@@ -6,6 +7,8 @@ from tiler import Tiler
 class TilerUnitTest(unittest.TestCase):
     def setUp(self):
         self.tiler = Tiler()
+        self.assertEqual(row_count, 4, "Not ready for other table configuration")
+        self.assertEqual(col_count, 4, "Not ready for other table configuration")
 
     def test_move_result_when_column_2222(self):
         self.assert_move_result_column(

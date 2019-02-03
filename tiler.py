@@ -1,5 +1,5 @@
 import random
-from config import row_count, col_count
+from config import row_count, col_count, new_tile_values
 from direction import Direction
 from tile import Tile
 
@@ -86,7 +86,7 @@ class Tiler:
 
     def spawn_new_tile(self):
         empty = self.get_random_empty_tile()
-        empty.value = 2
+        empty.value = random.choice(new_tile_values)
 
     def get_random_empty_tile(self):
         random.shuffle(self.__random_indexes_x)
