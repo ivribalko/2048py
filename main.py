@@ -1,9 +1,7 @@
+from config import row_count
 from drawer import row, clear
-from tiler import Tiler
+from tiler import Tiler, NoEmptyTileError
 from direction import Direction
-
-row_count = 4
-col_count = 4
 
 keyboard_to_direction = {
     'w': Direction.UP,
@@ -20,7 +18,7 @@ def spawn_new_and_redraw():
         row(tiler.get_row_text(x))
 
 
-tiler = Tiler(row_count, col_count)
+tiler = Tiler()
 spawn_new_and_redraw()
 
 while True:
@@ -34,4 +32,7 @@ while True:
         elif str(e) == 'r':
             tiler.clear()
         else:
-            print("Use W A S D or R or Q")
+            print("Use W/A/S/D, R, Q")
+    except NoEmptyTileError:
+        tiler.clear()
+        spawn_new_and_redraw()
