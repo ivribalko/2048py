@@ -25,9 +25,9 @@ while True:
         tiler.apply_move(direction)
         spawn_new_and_redraw()
     except KeyError as e:
-        if str(e) == 'q':
+        if str(e) == '\'q\'':
             break
-        elif str(e) == 'r':
+        elif str(e) == '\'r\'':
             restart()
         else:
             print("Use W/A/S/D, R, Q")
