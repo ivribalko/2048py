@@ -31,5 +31,7 @@ while True:
     except KeyError as e:
         if str(e) == 'q':
             break
+        elif str(e) == 'r':
+            tiler.clear()
         else:
-            print("Use W A S D")
+            print("Use W A S D or R or Q")

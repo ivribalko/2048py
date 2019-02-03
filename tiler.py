@@ -27,24 +27,33 @@ class Tiler:
         self.random_indexes = list(range(col_count))
 
     def apply_move(self, direction):
+        if direction is Direction.UP:
+            self.apply_move_vertical(False)
         if direction is Direction.DOWN:
-            max_y = self.row_count - 1
-            for x in range(0, self.col_count):
-                last_busy_y = max_y
-                for y in reversed(range(0, max_y)):
-                    moving_tile = self.tiles[x][y]
+            self.apply_move_vertical(True)
 
-                    if moving_tile.is_empty():
-                        continue
+    def apply_move_vertical(self, from_bottom_to_top):
+        max_index_y = self.row_count - 1
+        for x in range(self.col_count):
+            move_next_into = max_index_y if from_bottom_to_top else 0
+            if from_bottom_to_top:
+                vertical_range = reversed(range(max_index_y))
+            else:
+                vertical_range = range(1, max_index_y + 1)
 
-                    if not try_move_tile_into(moving_tile, self.tiles[x][last_busy_y]):
-                        empty_y = last_busy_y - 1
-                        if empty_y != y and empty_y >= 0:
-                            try_move_tile_into(moving_tile, self.tiles[x][empty_y])
-                            last_busy_y = empty_y
-                        else:
-                            last_busy_y = y
+            for y in vertical_range:
+                moving_tile = self.tiles[x][y]
 
+                if moving_tile.is_empty():
+                    continue
+
+                if not try_move_tile_into(moving_tile, self.tiles[x][move_next_into]):
+                    empty_y = move_next_into + -1 if from_bottom_to_top else 1
+                    if empty_y != y and 0 <= empty_y <= max_index_y:
+                        try_move_tile_into(moving_tile, self.tiles[x][empty_y])
+                        move_next_into = empty_y
+                    else:
+                        move_next_into = y
 
     def get_row_text(self, row_index):
         row_text = ''
