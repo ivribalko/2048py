@@ -4,7 +4,7 @@ from direction import Direction
 from tiler import Tiler
 
 
-def force_table_resolution(cols, rows):
+def force_table_resolution(cols: int, rows: int):
     def wrap(f):
         def wrapped_f(*args):
             config.col_count = cols

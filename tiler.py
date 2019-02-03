@@ -25,7 +25,7 @@ class Tiler:
         self.__stub_tile_row_text_top = f'|{"¯" * config.tile_width}|' * config.col_count + '\n'
         self.__stub_tile_row_text_bot = '\n' + f'|{"_" * config.tile_width}|' * config.col_count
 
-    def apply_move(self, direction):
+    def apply_move(self, direction: Direction):
         if direction is Direction.UP:
             self.apply_move_for_tiles(self.__cols, _reversed=False)
         if direction is Direction.DOWN:
@@ -36,7 +36,7 @@ class Tiler:
             self.apply_move_for_tiles(self.__rows, _reversed=True)
 
     @staticmethod
-    def apply_move_for_tiles(tiles, _reversed):
+    def apply_move_for_tiles(tiles: list, _reversed: bool):
         for _list in tiles:
             move_next_into = len(_list) - 1 if _reversed else 0
             if _reversed:
@@ -57,7 +57,7 @@ class Tiler:
                         move_next_into = index
 
     @staticmethod
-    def try_move_tile_into(move_from, move_to):
+    def try_move_tile_into(move_from: Tile, move_to: Tile) -> bool:
         if move_from == move_to:
             raise SameTileError("Moving from and to are same")
 
@@ -67,7 +67,7 @@ class Tiler:
             return True
         return False
 
-    def get_row_text(self, row_index):
+    def get_row_text(self, row_index: int) -> str:
         row_text = self.__stub_tile_row_text_top
         for tile in self.__rows[row_index]:
             row_text += tile.get_text()
@@ -83,7 +83,7 @@ class Tiler:
         empty = self.get_random_empty_tile()
         empty.value = random.choice(config.new_tile_values)
 
-    def get_random_empty_tile(self):
+    def get_random_empty_tile(self) -> Tile:
         random.shuffle(self.__random_indexes_x)
         random.shuffle(self.__random_indexes_y)
         for x in self.__random_indexes_x:
