@@ -80,8 +80,16 @@ class Tiler:
                 tile.value = 0
 
     def spawn_new_tile(self):
-        empty = self.get_random_empty_tile()
+        empty = self.get_next_empty_tile()
         empty.value = random.choice(config.new_tile_values)
+
+    def get_next_empty_tile(self) -> Tile:
+        for x in self.__random_indexes_x:
+            column = self.__cols[x]
+            for y in self.__random_indexes_y:
+                result = column[y]
+                if result.is_empty():
+                    return result
 
     def get_random_empty_tile(self) -> Tile:
         random.shuffle(self.__random_indexes_x)
@@ -89,9 +97,9 @@ class Tiler:
         for x in self.__random_indexes_x:
             column = self.__cols[x]
             for y in self.__random_indexes_y:
-                random_tile = column[y]
-                if random_tile.is_empty():
-                    return random_tile
+                result = column[y]
+                if result.is_empty():
+                    return result
 
         raise NoEmptyTileError("No empty tile")
 
